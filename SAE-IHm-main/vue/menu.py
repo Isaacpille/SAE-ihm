@@ -1,0 +1,87 @@
+import sys
+import os
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QPushButton, QMessageBox
+from PyQt6.QtGui import QFontDatabase, QFont
+
+class Menu(QWidget):
+    def __init__(self):
+        
+        super().__init__()
+        self.setObjectName("menuPrincipal")
+
+        self.layout: QVBoxLayout = QVBoxLayout()
+        self.setLayout(self.layout)
+        self.setWindowTitle("Néonaure")
+        self.resize(400, 700)
+        
+        # ------------- QLabel (Titre) ------------- #
+        
+        self.game_title: QLabel = QLabel("Néonaure")
+        self.game_title.setObjectName("Title")
+        self.game_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        # ------------- QPushButtons (Démarrer et Paramètres) ------------- #
+        
+        self.start: QPushButton = QPushButton("Démarrer")
+        self.regles: QPushButton = QPushButton("Règles du jeu")
+        self.quit: QPushButton = QPushButton("Quitter")
+        self.quit.clicked.connect(self.close)
+        self.regles.clicked.connect(self.__afficher_regles)
+
+        
+        # ------------- QLabel (Crédit en bas de page) ------------- #
+        
+        self.credits: QLabel = QLabel("Isaac PILLE-YARD - Youenn DEZITTER - Arthur LECLERC")
+        self.credits.setObjectName("Credits")
+        self.credits.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        # ------------- Ajouts des Widgets au Layout ------------- #
+        
+        self.vboxLayout = QVBoxLayout()
+        
+        self.vboxLayout.addWidget(self.game_title)
+        self.vboxLayout.addWidget(self.start) ; 
+        self.vboxLayout.addWidget(self.regles) ; 
+        self.vboxLayout.addWidget(self.quit)
+        
+        self.vboxWidget = QWidget()
+        self.vboxWidget.setLayout(self.vboxLayout)
+        
+        self.layout.addStretch() # Permet d'espacer vboxWidget au centre
+        self.layout.addWidget(self.vboxWidget, alignment = Qt.AlignmentFlag.AlignCenter)
+        self.layout.addStretch() # Permet de déplacer les crédits en bas de page
+        self.layout.addWidget(self.credits, alignment = Qt.AlignmentFlag.AlignCenter)
+        
+    def __afficher_regles(self):
+        QMessageBox.information(self, "Règles du Néonaure",
+            "Le Néonaure est un puzzle similaire au Suguru.\n\n"
+            "3 règles :\n"
+            "1. Chaque case doit contenir un chiffre.\n"
+            "2. Les 8 voisins d'une case doivent avoir des valeurs différentes.\n"
+            "3. Chaque motif de taille N doit contenir une permutation de 1 à N."
+        )
+        
+        
+ # ------------- Getters ------------- #
+    def get_start(self):
+       return self.start
+        
+        
+# -------------- MAIN -------------- #
+
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+    
+#     base_dir = os.path.dirname(os.path.abspath(__file__))
+#     font_path = os.path.join(base_dir, "qss", "LuckiestGuy-Regular.ttf")
+#     QFontDatabase.addApplicationFont(font_path)
+
+#     qss_path = os.path.join(base_dir, "qss", "menu_style.qss")
+#     with open(qss_path, "r") as f:
+#         app.setStyleSheet(f.read())
+        
+#     menu = Menu()
+#     menu.show()
+        
+#     sys.exit(app.exec())
